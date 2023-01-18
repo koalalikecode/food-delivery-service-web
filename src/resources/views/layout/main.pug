@@ -1,10 +1,11 @@
-html
+html(lang="en")
   head
-    title Food Delivery Service App
-    block scripts
-      script(src='/jquery.js')
-  body
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0")
+    title Food Delivery Service Web
+    link(href="/styles/style.css", rel="stylesheet")
+  body(class="flex")
+  aside(class="bg-black h-screen w-1/6")
+  main.flex-grow
     block content
-    block foot
-      #footer
-        h2 Footer

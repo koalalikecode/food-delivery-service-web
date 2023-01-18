@@ -8,7 +8,8 @@ const route = require("./routes");
 app.set("view engine", "pug");
 
 app.set("views", path.join(__dirname, "resources/views"));
+app.use(express.static(path.join(__dirname, "public")));
 
 route(app);
 
-app.listen(3000);
+app.listen(3000, () => console.log("listening on port 3000"));
