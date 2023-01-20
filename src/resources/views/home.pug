@@ -1,4 +1,78 @@
 extends layout/main.pug
 
+block dashboard_nav 
+    a(href='/' class='flex items-center gap-1 px-8 py-2 relative bg-light-purple text-strong-purple before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-strong-purple')
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+        </svg>
+        span Dashboard
+
 block content
-    h1.bg-red Hello Duy
+    header(class="bg-black pt-8 px-10 pb-24 text-dark-grey relative")
+        div(class="flex items-center justify-between")
+            div(class='text-dark-grey relative inline-block')
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 absolute left-2 top-1/2 -translate-y-1/2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>
+                input(type="text" placeholder="Search something here" class="pl-8 py-2 w-80 border text-white border-dark-grey rounded-md bg-black")
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 absolute right-2 top-1/2 -translate-y-1/2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+            div(class="text-dark-grey flex items-center gap-x-5")
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                    <path fill-rule="evenodd" d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z" clip-rule="evenodd" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                    <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+                    <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+                </svg>
+        div(class='flex gap-1 mt-6 mb-3')
+            p Main menu /
+            p(class='text-white') Dashboard
+        p(class='text-white text-2xl mb-3') Welcome back, 
+            strong Guys 🙌✨
+        p(class='w-96') This is our restaurant management system, let's check some stuffs and manage our customers, shippers, orders and more 🚀
+        div(class='flex absolute bottom-0 translate-y-1/2 gap-5 px-10 left-0 w-full')
+            div(class='rounded-xl overflow-hidden border border-gray-300 hover:shadow-md')
+                div(class='flex bg-[a7f6e2] text-black items-center w-max gap-20 py-4 px-5')
+                    div(class='')
+                        p.font-semibold Total Orders 
+                        p(class='text-5xl font-bold') 3731
+                    div(class='p-3 bg-[edfefa] rounded-lg') 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 text-[8ad2c0]">
+                            <path fill-rule="evenodd" d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 004.25 22.5h15.5a1.875 1.875 0 001.865-2.071l-1.263-12a1.875 1.875 0 00-1.865-1.679H16.5V6a4.5 4.5 0 10-9 0zM12 3a3 3 0 00-3 3v.75h6V6a3 3 0 00-3-3zm-3 8.25a3 3 0 106 0v-.75a.75.75 0 011.5 0v.75a4.5 4.5 0 11-9 0v-.75a.75.75 0 011.5 0v.75z" clip-rule="evenodd" />
+                        </svg>
+                div(class='bg-white')
+                    p(class='text-sm text-black pt-1 pb-1.5 px-3') Number of orders from beginning
+            div(class='rounded-xl overflow-hidden border border-gray-300 hover:shadow-md')
+                div(class='flex bg-[b79bff] text-black items-center w-max gap-20 py-4 px-5')
+                    div(class='')
+                        p.font-semibold Total Customers
+                        p(class='text-5xl font-bold') 1021
+                    div(class='p-3 bg-[edfefa] rounded-lg') 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 text-[b79bff]">
+                            <path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" />
+                        </svg>
+                div(class='bg-white')
+                    p(class='text-sm text-black pt-1 pb-1.5 px-3') Number of customers trying our foods
+            div(class='rounded-xl overflow-hidden border border-gray-300 hover:shadow-md')
+                div(class='flex bg-[ffe5a4] text-black items-center w-max gap-20 py-4 px-5')
+                    div(class='')
+                        p.font-semibold Total Shippers 
+                        p(class='text-5xl font-bold') 931
+                    div(class='p-3 bg-[edfefa] rounded-lg') 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 text-[ffe5a4]">
+                            <path d="M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25zM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875h.375a3 3 0 116 0h3a.75.75 0 00.75-.75V15z" />
+                            <path d="M8.25 19.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0zM15.75 6.75a.75.75 0 00-.75.75v11.25c0 .087.015.17.042.248a3 3 0 015.958.464c.853-.175 1.522-.935 1.464-1.883a18.659 18.659 0 00-3.732-10.104 1.837 1.837 0 00-1.47-.725H15.75z" />
+                            <path d="M19.5 19.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
+                        </svg>
+                div(class='bg-white')
+                    p(class='text-sm text-black pt-1 pb-1.5 px-3') Shippers from Grab, Gojek, Be
+    div(class='mt-24 px-10')
+        p(class='text-lg font-semibold') What do you want to do?
+        div(class='py-5 rounded-md flex gap-4')
+            a(class='px-2.5 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70') Create Order
+            a(class='px-2.5 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70') Add Customer
+            a(class='px-2.5 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70') Add Shipper
+            a(class='px-2.5 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70') Add Food
+
