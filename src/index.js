@@ -3,6 +3,10 @@ const pug = require("pug");
 const path = require("path");
 const app = express();
 const route = require("./routes");
+const db = require("./config/db");
+
+//Connect to db
+db.connect();
 
 //template engine
 app.set("view engine", "pug");
