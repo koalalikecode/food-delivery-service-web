@@ -3,10 +3,13 @@ const pug = require("pug");
 const path = require("path");
 const app = express();
 const route = require("./routes");
-const db = require("./config/db");
+const dbconnection = require("./config/db");
 
 //Connect to db
-db.connect();
+dbconnection.connect((err) => {
+  if (err) return err;
+  console.log("Successfully connected to MySQL database");
+});
 
 //template engine
 app.set("view engine", "pug");
