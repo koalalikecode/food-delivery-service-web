@@ -1,7 +1,13 @@
+const connection = require("../../../config/db");
+
 class CustomerController {
   // [GET] /customer/list
   list(req, res) {
-    res.render("customer/list");
+    const customerListQuery = "select * from Customer";
+    connection.query(customerListQuery, function (err, result) {
+      if (err) return err;
+      res.render("customer/list", { customers: result });
+    });
   }
 
   // [GET] /customer/add

@@ -27,117 +27,14 @@ block content
                     tr
                         th(class='pl-4') Customer ID 
                         th Name 
-                        th Date of birth 
+                        th Phone Number 
                         th Address
                 tbody
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
-                    tr(class="border-b border-gray-300")
-                        td(class='pl-4') C001 
-                        td Nguyễn Trọng Duy 
-                        td 16/08/2003
-                        td Hanoi
+                    each customer in customers 
+                        tr(class="border-b border-gray-300")
+                            td(class='pl-4')= customer.CustomerID 
+                            td= customer.name
+                            td= customer.PhoneNumber
+                            td= customer.Address
+
 
