@@ -3,6 +3,9 @@ module.exports = {
   content: [
     "./src/resources/views/layout/*.{pug, html}",
     "./src/resources/views/customer/*.{pug, html}",
+    "./src/resources/views/shipper/*.{pug, html}",
+    "./src/resources/views/menu/*.{pug, html}",
+    "./src/resources/views/order/*.{pug, html}",
     "./src/resources/views/*.{pug, html}",
   ],
   theme: {

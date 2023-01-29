@@ -16,6 +16,7 @@ app.set("view engine", "pug");
 
 app.set("views", path.join(__dirname, "resources/views"));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({ extended: true }));
 
 route(app);
 

@@ -569,6 +569,9 @@ video {
 .h-7 {
   height: 1.75rem;
 }
+.max-h-\[75vh\] {
+  max-height: 75vh;
+}
 .w-6 {
   width: 1.5rem;
 }

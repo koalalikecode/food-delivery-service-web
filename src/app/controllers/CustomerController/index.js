@@ -14,6 +14,21 @@ class CustomerController {
   add(req, res) {
     res.render("customer/add");
   }
+
+  // [POST] /customer/store
+  store(req, res) {
+    const { customerName, customerPhone, customerAddress } = req.body;
+    const customerAddQuery =
+      "insert into customer (name, PhoneNumber, Address) values (?, ?, ?);";
+    connection.query(
+      customerAddQuery,
+      [customerName, customerPhone, customerAddress],
+      function (err, result) {
+        if (err) return err;
+        res.redirect("/customer/list");
+      }
+    );
+  }
 }
 
 module.exports = new CustomerController();

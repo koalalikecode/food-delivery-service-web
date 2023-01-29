@@ -37,7 +37,7 @@ block content
                 div(class='flex bg-[a7f6e2] text-black items-center w-max gap-20 py-4 px-5')
                     div(class='')
                         p.font-semibold Total Orders 
-                        p(class='text-5xl font-bold') 3731
+                        p(class='text-5xl font-bold')= totalOrders
                     div(class='p-3 bg-[edfefa] rounded-lg') 
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 text-[8ad2c0]">
                             <path fill-rule="evenodd" d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 004.25 22.5h15.5a1.875 1.875 0 001.865-2.071l-1.263-12a1.875 1.875 0 00-1.865-1.679H16.5V6a4.5 4.5 0 10-9 0zM12 3a3 3 0 00-3 3v.75h6V6a3 3 0 00-3-3zm-3 8.25a3 3 0 106 0v-.75a.75.75 0 011.5 0v.75a4.5 4.5 0 11-9 0v-.75a.75.75 0 011.5 0v.75z" clip-rule="evenodd" />
@@ -48,7 +48,7 @@ block content
                 div(class='flex bg-[b79bff] text-black items-center w-max gap-20 py-4 px-5')
                     div(class='')
                         p.font-semibold Total Customers
-                        p(class='text-5xl font-bold') 1021
+                        p(class='text-5xl font-bold')= totalCustomers
                     div(class='p-3 bg-[edfefa] rounded-lg') 
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 text-[b79bff]">
                             <path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" />
@@ -59,7 +59,7 @@ block content
                 div(class='flex bg-[ffe5a4] text-black items-center w-max gap-20 py-4 px-5')
                     div(class='')
                         p.font-semibold Total Shippers 
-                        p(class='text-5xl font-bold') 931
+                        p(class='text-5xl font-bold')= totalShippers
                     div(class='p-3 bg-[edfefa] rounded-lg') 
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 text-[ffe5a4]">
                             <path d="M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25zM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875h.375a3 3 0 116 0h3a.75.75 0 00.75-.75V15z" />
@@ -71,8 +71,8 @@ block content
     div(class='mt-24 px-10')
         p(class='text-lg font-semibold') What do you want to do?
         div(class='py-5 rounded-md flex gap-4')
-            a(class='px-2.5 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70') Create Order
+            a(href='/order/add' class='px-2.5 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70') Create Order
             a(href='/customer/add' class='px-2.5 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70') Add Customer
-            a(class='px-2.5 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70') Add Shipper
-            a(class='px-2.5 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70') Add Food
+            a(href='/shipper/add' class='px-2.5 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70') Add Shipper
+            a(href='/food/add' class='px-2.5 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70') Add Food
 
