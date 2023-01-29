@@ -18,7 +18,7 @@ block content
                     input(type="text" placeholder="Search something here" class="pl-8 py-2 w-80 border text-black placeholder:text-dark-grey focus:outline-none focus:border focus:border-strong-purple rounded-md")
                 a(href='/shipper/add' class='px-2.5 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70 flex gap-1 items-center') 
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
                     span Create Order        
         div(class='max-h-[75vh] overflow-auto purple-scrollbar')     
@@ -28,13 +28,22 @@ block content
                         th(class='pl-4') Order ID 
                         th Customer ID 
                         th Shipper ID 
-                        th Status 
+                        th(class='text-center') Status 
                 tbody
                     each order in orders 
                         tr(class="border-b border-gray-300")
                             td(class='pl-4')= order.OrderID 
                             td= order.CustomerID
                             td= order.ShipperID 
-                            td= order.Status
+                            td(class='text-center')
+                                case order.Status
+                                    when 'Done'
+                                        span(class="bg-[E0F0BB] px-2 py-0.5 rounded-full text-[70961A]")= order.Status
+                                    when 'Processing'
+                                        span(class="bg-[FFEEC2] px-2 py-0.5 rounded-full text-[b48f31]")= order.Status
+                                    when 'Failed'
+                                        span(class="bg-red-300 px-2 py-0.5 rounded-full text-red-600")= order.Status
+                                    default 
+                                        span= order.Status
 
 
