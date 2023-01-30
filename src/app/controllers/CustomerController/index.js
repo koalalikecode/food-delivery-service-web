@@ -3,11 +3,16 @@ const connection = require("../../../config/db");
 class CustomerController {
   // [GET] /customer/list
   list(req, res) {
-    const customerListQuery =
-      "select concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID, name, PhoneNumber, Address from customer";
+    const customerSearch = req.query.customerSearch;
+    const customerListQuery = customerSearch
+      ? `select concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID, name, PhoneNumber, Address from customer where name like '%${customerSearch.trim()}%';`
+      : "select concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID, name, PhoneNumber, Address from customer";
     connection.query(customerListQuery, function (err, result) {
       if (err) return err;
-      res.render("customer/list", { customers: result });
+      res.render("customer/list", {
+        customers: result,
+        customerSearch: customerSearch ? customerSearch : "",
+      });
     });
   }
 

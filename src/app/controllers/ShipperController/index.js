@@ -3,11 +3,17 @@ const connection = require("../../../config/db");
 class ShipperController {
   // [GET] /shipper/list
   list(req, res) {
-    const shipperListQuery =
-      "select concat(case when ShipperID < 10 then 'S0' else 'S' end, ShipperID) as ShipperID, name, PhoneNumber from shipper;";
+    const shipperSearch = req.query.shipperSearch;
+    const shipperListQuery = shipperSearch
+      ? `select concat(case when ShipperID < 10 then 'S0' else 'S' end, ShipperID) as ShipperID, name, PhoneNumber
+      from shipper where name like '%${shipperSearch.trim()}%';`
+      : "select concat(case when ShipperID < 10 then 'S0' else 'S' end, ShipperID) as ShipperID, name, PhoneNumber from shipper";
     connection.query(shipperListQuery, function (err, result) {
       if (err) return err;
-      res.render("shipper/list", { shippers: result });
+      res.render("shipper/list", {
+        shippers: result,
+        shipperSearch: shipperSearch ? shipperSearch : "",
+      });
     });
   }
 
