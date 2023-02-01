@@ -64,6 +64,16 @@ class MenuController {
       }
     );
   }
+
+  // [DELETE] /food/delete/:id
+  delete(req, res) {
+    const foodID = req.params.id;
+    const deleteFoodQuery = "delete from food where foodID = ?";
+    connection.query(deleteFoodQuery, [foodID], (err, result) => {
+      if (err) return err;
+      res.redirect("/food/list");
+    });
+  }
 }
 
 module.exports = new MenuController();
