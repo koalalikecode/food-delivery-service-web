@@ -4,7 +4,7 @@ class ShipperController {
   // [GET] /order/list
   list(req, res) {
     const orderListQuery =
-      "select concat(case when OrderID < 10 then 'Or0' else 'Or' end, OrderID) as OrderID, concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID, concat(case when ShipperID < 10 then 'S0' else 'S' end, ShipperID) as ShipperID, Status from orders;";
+      "select OrderID as OrderNum, concat(case when OrderID < 10 then 'Or0' else 'Or' end, OrderID) as OrderID, concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID, concat(case when ShipperID < 10 then 'S0' else 'S' end, ShipperID) as ShipperID, Status from orders;";
     connection.query(orderListQuery, function (err, result) {
       if (err) return err;
       res.render("order/list", { orders: result });
@@ -14,6 +14,30 @@ class ShipperController {
   // [GET] /order/add
   add(req, res) {
     res.render("order/add");
+  }
+
+  // [GET] /order/:id
+  show(req, res) {
+    const orderID = req.params.id;
+    const showQuery =
+      "select concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID, name, PhoneNumber, Address from customer natural join orders where OrderID = ?; select ShipperID as ShipperNum, concat(case when ShipperID < 10 then 'S0' else 'S' end, ShipperID) as ShipperID, name, PhoneNumber from shipper natural join orders where OrderID = ?; select * from food_order_supply natural join food where orderID = ?;";
+    connection.query(
+      showQuery,
+      [orderID, orderID, orderID],
+      function (err, result) {
+        if (err) return err;
+        let total = 0;
+        result[2].forEach((food) => {
+          total += food.price * food.Quantity;
+        });
+        res.render("order/show", {
+          order: { total, orderID, isOrderGreaterThan10: orderID >= 10 },
+          customer: result[0][0],
+          shipper: result[1][0],
+          foods: result[2],
+        });
+      }
+    );
   }
 }
 

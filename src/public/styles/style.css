@@ -650,11 +650,26 @@ video {
 .w-7 {
   width: 1.75rem;
 }
+.w-40 {
+  width: 10rem;
+}
+.w-44 {
+  width: 11rem;
+}
 .max-w-4xl {
   max-width: 56rem;
 }
 .max-w-md {
   max-width: 28rem;
+}
+.max-w-xs {
+  max-width: 20rem;
+}
+.max-w-\[100px\] {
+  max-width: 100px;
+}
+.max-w-\[200px\] {
+  max-width: 200px;
 }
 .flex-grow {
   flex-grow: 1;
@@ -699,6 +714,12 @@ video {
 }
 .gap-20 {
   gap: 5rem;
+}
+.gap-10 {
+  gap: 2.5rem;
+}
+.gap-16 {
+  gap: 4rem;
 }
 .gap-y-2 {
   row-gap: 0.5rem;
@@ -805,6 +826,18 @@ video {
 .bg-\[ffe5a4\] {
   background-color: ffe5a4;
 }
+.bg-blue-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity));
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+}
+.bg-blue-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
 .p-4 {
   padding: 1rem;
 }
@@ -889,6 +922,14 @@ video {
 .py-5 {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 .pl-3 {
   padding-left: 0.75rem;
