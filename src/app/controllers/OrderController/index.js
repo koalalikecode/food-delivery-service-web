@@ -13,7 +13,48 @@ class ShipperController {
 
   // [GET] /order/add
   add(req, res) {
-    res.render("order/add");
+    const selectQuery =
+      "select * from customer;select * from shipper;select * from food";
+    connection.query(selectQuery, function (err, result) {
+      if (err) return err;
+      res.render("order/add", {
+        customers: result[0],
+        shippers: result[1],
+        foods: result[2],
+      });
+    });
+  }
+
+  // [POST] /order/store
+  store(req, res) {
+    const {
+      orderCustomer,
+      orderShipper,
+      orderStatus,
+      orderFood,
+      orderFoodQuantity,
+    } = req.body;
+    const orderCreateQuery =
+      "insert into orders (CustomerID, ShipperID, Status) values (?, ?, ?); select max(OrderID) as OrderID from orders";
+    const foodOrderSupplyAddQuery =
+      "insert into food_order_supply values (?, ?, ?);";
+    connection.query(
+      orderCreateQuery,
+      [orderCustomer, orderShipper, orderStatus],
+      function (err, result) {
+        if (err) return err;
+        for (let i = 0; i < orderFood.length; i++) {
+          connection.query(
+            foodOrderSupplyAddQuery,
+            [orderFood[i], result[1][0].OrderID, orderFoodQuantity[i]],
+            function (err, res) {
+              if (err) return err;
+            }
+          );
+        }
+        res.redirect("/order/list");
+      }
+    );
   }
 
   // [GET] /order/:id
@@ -38,6 +79,17 @@ class ShipperController {
         });
       }
     );
+  }
+
+  // [DELETE] /order/delete/:id
+  delete(req, res) {
+    const orderID = req.params.id;
+    const deleteOrderQuery =
+      "delete from food_order_supply where OrderID = ?; delete from orders where OrderID = ?";
+    connection.query(deleteOrderQuery, [orderID, orderID], (err, result) => {
+      if (err) return err;
+      res.redirect("/order/list");
+    });
   }
 }
 

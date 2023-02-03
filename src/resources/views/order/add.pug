@@ -1,18 +1,68 @@
 extends ../layout/main.pug
 
-block customer_nav 
+block order_nav 
     a(href='/customer/list' class='flex items-center gap-1 px-8 py-2 relative bg-light-purple text-strong-purple before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-strong-purple')
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
         </svg>
         span Orders
 block content
-    form(class='max-w-4xl mx-auto mt-10' action="")
-        h3(class='text-2xl font-bold mb-6') Add Customer
-        label(for="customerName" class="block font-semibold mb-1 text-dark-grey") Name:
-        input(id='customerName' name="customerName" type="text" placeholder="Eg: Nguyen Trong Duy" class="pl-3 py-2 w-80 border text-black placeholder:text-dark-grey focus:outline-none focus:border focus:border-strong-purple rounded-md mb-3")  
-        label(for="customerPhone" class="block font-semibold mb-1 text-dark-grey") Phone number:
-        input(id='customerPhone' name="customerPhone" type="text" placeholder="Eg: 0981234567" class="pl-3 py-2 w-80 border text-black placeholder:text-dark-grey focus:outline-none focus:border focus:border-strong-purple rounded-md mb-3")  
-        label(for="customerAddress" class="block font-semibold mb-1 text-dark-grey") Address:
-        input(id='customerAddress' name="customerAddress" type="text" placeholder="Eg: Ha Noi" class="pl-3 py-2 w-80 border text-black placeholder:text-dark-grey focus:outline-none focus:border focus:border-strong-purple rounded-md mb-3")
-        button(class='block mt-2 px-3 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70') Submit
+    form(class='max-w-4xl mx-auto mt-10' action="/order/store" method='POST')
+        h3(class='text-2xl font-bold mb-6') Create Order
+        label(for="orderCustomer" class="block font-semibold mb-1 text-dark-grey") Customer:
+        select(id='orderCustomer' name="orderCustomer" type="text" class="pl-3 py-2 w-80 border text-black placeholder:text-dark-grey focus:outline-none focus:border focus:border-strong-purple rounded-md mb-3")
+            each customer in customers
+                option(value=`${customer.CustomerID}`)=customer.name
+        label(for="orderShipper" class="block font-semibold mb-1 text-dark-grey") Shipper:
+        select(id='orderShipper' name="orderShipper" type="text" class="pl-3 py-2 w-80 border text-black placeholder:text-dark-grey focus:outline-none focus:border focus:border-strong-purple rounded-md mb-3")
+            each shipper in shippers
+                option(value=`${shipper.ShipperID}`)=shipper.name  
+        div(class="mb-3")
+            P(class="block font-semibold mb-1 text-dark-grey") Select the status
+            div(class='flex items-center gap-1 mb-0.5 ml-5')
+                input( type="radio" id="Done" name="orderStatus" value="Done")
+                label(for="Done") Done
+            div(class='flex items-center gap-1 mb-0.5 ml-5')
+                input( type="radio" id="Processing" name="orderStatus" value="Processing")
+                label(for="Processing") Processing
+            div(class='flex items-center gap-1 mb-0.5 ml-5')
+                input( type="radio" id="Failed" name="orderStatus" value="Failed")
+                label(for="Failed") Failed
+        #order-food
+            div(id='food-input' class="flex items-center gap-5")
+                div
+                    label(class="block font-semibold mb-1 text-dark-grey") Food:
+                    select(name="orderFood" type="text" class="pl-3 py-2 w-80 border text-black placeholder:text-dark-grey focus:outline-none focus:border focus:border-strong-purple rounded-md mb-3")
+                        each food in foods
+                            option(value=`${food.FoodID}`)=food.name
+                div
+                    label(class="block font-semibold mb-1 text-dark-grey") Quantity:
+                    input(name="orderFoodQuantity" type="number" class="pl-3 py-2 w-20 border text-black placeholder:text-dark-grey focus:outline-none focus:border focus:border-strong-purple rounded-md mb-3")
+        div(class='flex gap-2')
+            button(id='add' class='block px-3 py-1.5 bg-blue-500 text-white rounded-md cursor-pointer hover:opacity-70') More food
+            button(id='delete' class='block px-3 py-1.5 bg-red-500 text-white rounded-md cursor-pointer hover:opacity-70') Delete
+        button(class='block mt-10 px-3 py-1.5 bg-strong-purple text-white rounded-md cursor-pointer hover:opacity-70') Create
+    script.
+        document.addEventListener("DOMContentLoaded", function() {
+            let count = 1;
+            const orderFoods = document.getElementById("order-food");
+            const foodInput = document.getElementById("food-input");
+            const addBtn = $('#add');
+            const deleteBtn = $('#delete');
+            addBtn.click(function (e) {
+                e.preventDefault();
+                count++;
+                let newFood = document.createElement("div");
+                newFood.classList.add('flex', 'items-center', 'gap-5');
+                newFood.innerHTML = foodInput.innerHTML
+                orderFoods.appendChild(newFood);
+            })
+
+            deleteBtn.click(function(e) {
+                e.preventDefault();
+                if(count > 1) {
+                    count--;
+                    orderFoods.removeChild(orderFoods.lastElementChild);
+                }
+            })
+        })
