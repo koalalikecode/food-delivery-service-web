@@ -81,6 +81,54 @@ class ShipperController {
     );
   }
 
+  // [GET] /order/edit/:id
+  edit(req, res) {
+    const orderID = req.params.id;
+    const orderListQuery =
+      "select * from customer;select * from shipper;select * from food";
+    connection.query(orderListQuery, [orderID], function (err, result) {
+      if (err) return err;
+      res.render("order/edit", {
+        order: orderID,
+        customers: result[0],
+        shippers: result[1],
+        foods: result[2],
+      });
+    });
+  }
+
+  //[PUT] /order/update/:id
+  update(req, res) {
+    const orderID = req.params.id;
+    const {
+      orderCustomer,
+      orderShipper,
+      orderStatus,
+      orderFood,
+      orderFoodQuantity,
+    } = req.body;
+    const orderUpdateQuery = `update orders set CustomerID = ?, ShipperID = ?, Status = ? where OrderID = ${orderID}; delete from food_order_supply where OrderID = ${orderID}`;
+    const foodOrderSupplyAddQuery =
+      "insert into food_order_supply values (?, ?, ?);";
+    connection.query(
+      orderUpdateQuery,
+      [orderCustomer, orderShipper, orderStatus],
+      function (err, result) {
+        if (err) return err;
+        for (let i = 0; i < orderFood.length; i++) {
+          connection.query(
+            foodOrderSupplyAddQuery,
+            [orderFood[i], orderID, orderFoodQuantity[i]],
+            function (err, res) {
+              if (err) return err;
+            }
+          );
+        }
+        res.redirect("/order/list");
+      }
+    );
+  }
+
   // [DELETE] /order/delete/:id
   delete(req, res) {
     const orderID = req.params.id;
