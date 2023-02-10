@@ -3,12 +3,14 @@ const customerRouter = require("./Customer");
 const shipperRouter = require("./Shipper");
 const menuRouter = require("./Menu");
 const orderRouter = require("./Order");
+const trashRouter = require("./Trash");
 
 function route(app) {
   app.use("/customer", customerRouter);
   app.use("/shipper", shipperRouter);
   app.use("/food", menuRouter);
   app.use("/order", orderRouter);
+  app.use("/trash", trashRouter);
   app.use("/", homeRouter);
 }
 
