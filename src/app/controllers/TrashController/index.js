@@ -15,6 +15,30 @@ class TrashController {
       });
     });
   }
+  // [POST] /trash/customer/restore/:id
+  restoreCustomer(req, res) {
+    const customerID = req.params.id;
+    const restoreCustomerQuery =
+      "insert into customer select * from DeletedCustomer where CustomerID = ?;delete from DeletedCustomer where CustomerID = ?";
+    connection.query(
+      restoreCustomerQuery,
+      [customerID, customerID],
+      (err, result) => {
+        if (err) return err;
+        res.redirect("/trash");
+      }
+    );
+  }
+  // [DELETE] /trash/customer/delete/:id
+  deleteCustomer(req, res) {
+    const customerID = req.params.id;
+    const deleteCustomerQuery =
+      "delete from DeletedCustomer where CustomerID = ?";
+    connection.query(deleteCustomerQuery, [customerID], (err, result) => {
+      if (err) return err;
+      res.redirect("/trash");
+    });
+  }
 }
 
 module.exports = new TrashController();
