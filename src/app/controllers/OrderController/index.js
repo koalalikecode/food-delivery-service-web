@@ -61,7 +61,7 @@ class ShipperController {
   show(req, res) {
     const orderID = req.params.id;
     const showQuery =
-      "select concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID, name, PhoneNumber, Address from customer natural join orders where OrderID = ?; select ShipperID as ShipperNum, concat(case when ShipperID < 10 then 'S0' else 'S' end, ShipperID) as ShipperID, name, PhoneNumber from shipper natural join orders where OrderID = ?; select * from food_order_supply natural join food where orderID = ?;";
+      "select concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID, name, PhoneNumber, Address, Status from customer natural join orders where OrderID = ?; select ShipperID as ShipperNum, concat(case when ShipperID < 10 then 'S0' else 'S' end, ShipperID) as ShipperID, name, PhoneNumber from shipper natural join orders where OrderID = ?; select * from food_order_supply natural join food where orderID = ?;";
     connection.query(
       showQuery,
       [orderID, orderID, orderID],

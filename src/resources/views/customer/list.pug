@@ -29,6 +29,7 @@ block content
                         th Name 
                         th Phone Number 
                         th Address
+                        th Rank
                         th Action
                 tbody
                     each customer in customers 
@@ -37,6 +38,16 @@ block content
                             td= customer.name
                             td= customer.PhoneNumber
                             td= customer.Address
+                            td()
+                                case customer.rank_member
+                                    when 'gold'
+                                        span(class="bg-[#FFD700] px-2 py-0.5 rounded-full text-white")= customer.rank_member
+                                    when 'silver'
+                                        span(class="bg-[#C0C0C0] px-2 py-0.5 rounded-full text-white")= customer.rank_member
+                                    when 'bronze'
+                                        span(class="bg-[#cd7f32] px-2 py-0.5 rounded-full text-white")= customer.rank_member
+                                    default 
+                                        span= customer.rank_member
                             td 
                                 div(class="flex gap-1")
                                     a(href= `/customer/edit/${customer.CustomerNum}` class='hover:bg-gray-300 cursor-pointer rounded-full p-0.5 text-blue-400')
