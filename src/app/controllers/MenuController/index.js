@@ -4,9 +4,10 @@ class MenuController {
   // [GET] /food/list
   list(req, res) {
     const foodSearch = req.query.foodSearch;
-    const foodListQuery = foodSearch
-      ? `select FoodID as FoodNum, concat(case when FoodID < 10 then 'F0' else 'F' end, FoodID) as FoodID, name, price from food where name like '%${foodSearch.trim()}%';`
-      : "select FoodID as FoodNum, concat(case when FoodID < 10 then 'F0' else 'F' end, FoodID) as FoodID, name, price from food;";
+    const priceSort = req.query.priceSort;
+    const foodListQuery = `select FoodID as FoodNum, concat(case when FoodID < 10 then 'F0' else 'F' end, FoodID) as FoodID, name, price from food ${
+      foodSearch ? `where name like '%${foodSearch.trim()}%'` : ""
+    } ${priceSort ? `order by Price ${priceSort}` : ""}`;
     connection.query(foodListQuery, function (err, result) {
       if (err) return err;
       res.render("menu/list", {
