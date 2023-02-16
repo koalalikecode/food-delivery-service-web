@@ -576,6 +576,9 @@ video {
 .m-auto {
   margin: auto;
 }
+.m-6 {
+  margin: 1.5rem;
+}
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -821,6 +824,9 @@ video {
 .gap-20 {
   gap: 5rem;
 }
+.gap-10 {
+  gap: 2.5rem;
+}
 .gap-y-2 {
   row-gap: 0.5rem;
 }
@@ -1000,6 +1006,12 @@ video {
 }
 .to-green-500 {
   --tw-gradient-to: #22c55e;
+}
+.bg-cover {
+  background-size: cover;
+}
+.bg-fixed {
+  background-attachment: fixed;
 }
 .bg-clip-text {
   -webkit-background-clip: text;
@@ -1226,6 +1238,9 @@ video {
 }
 .tracking-tight {
   letter-spacing: -0.025em;
+}
+.tracking-normal {
+  letter-spacing: 0em;
 }
 .text-\[\#575663\] {
   --tw-text-opacity: 1;

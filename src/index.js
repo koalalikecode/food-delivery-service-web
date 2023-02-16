@@ -1,10 +1,18 @@
 const express = require("express");
+const session = require("express-session");
+const flash = require("connect-flash");
 const pug = require("pug");
 const path = require("path");
-var methodOverride = require("method-override");
+const methodOverride = require("method-override");
 const app = express();
 const route = require("./routes");
 const dbconnection = require("./config/db");
+const passport = require("passport");
+const { passportConfig } = require("./config/passport");
+const cookieParser = require("cookie-parser");
+
+app.use(cookieParser());
+app.use(flash());
 
 //Connect to db
 dbconnection.connect((err) => {
@@ -14,6 +22,22 @@ dbconnection.connect((err) => {
 
 // override with POST having ?_method=method
 app.use(methodOverride("_method"));
+
+// set up express session
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    cookie: { secure: false },
+    key: "express.sid",
+  })
+);
+
+// set up passportjs
+passportConfig(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 
 //template engine
 app.set("view engine", "pug");
