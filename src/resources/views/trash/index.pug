@@ -24,6 +24,7 @@ block content
                         th Name 
                         th Phone Number 
                         th Address
+                        th Rank
                         th Action
                 tbody
                     each customer in customers 
@@ -32,6 +33,7 @@ block content
                             td= customer.name
                             td= customer.PhoneNumber
                             td= customer.Address
+                            td= customer.rank_member
                             td 
                                 div(class="flex gap-1")
                                     a(data-modal-target="restore-popup-modal" 
