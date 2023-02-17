@@ -31,7 +31,7 @@ class HomeController {
   }
 
   authRegister(req, res) {
-    res.redirect("/login");
+    res.redirect("/home");
   }
 
   logout(req, res, next) {

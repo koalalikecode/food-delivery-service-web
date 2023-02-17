@@ -1,4 +1,6 @@
 // config/passport.js
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 // load all the things we need
 const LocalStrategy = require("passport-local").Strategy;
@@ -60,17 +62,16 @@ function passportConfig(passport) {
             } else {
               // if there is no user with that email
               // create the user
-              var newUserMysql = new Object();
-
-              newUserMysql.email = email;
-              newUserMysql.password = password; // use the generateHash function in our user model
+              let newUserMysql = new Object();
+              const hash = bcrypt.hashSync(password, saltRounds);
+              let hashPassword = hash;
+              newUserMysql.password = hash;
 
               const insertQuery =
                 "INSERT INTO users ( email, password ) values (?, ?)";
-              console.log(insertQuery);
               connection.query(
                 insertQuery,
-                [email, password],
+                [email, hashPassword],
                 function (err, rows) {
                   console.log(rows);
                   newUserMysql.id = rows.insertId;
@@ -116,7 +117,8 @@ function passportConfig(passport) {
             }
 
             // if the user is found but the password is wrong
-            if (!(rows[0].password == password))
+            const match = bcrypt.compareSync(password, rows[0].password);
+            if (!match)
               return done(
                 null,
                 false,
