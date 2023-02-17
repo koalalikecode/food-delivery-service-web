@@ -63,11 +63,37 @@ html(lang="en")
             <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
           </svg>
           span Help & Center
-        a(href='/logout' class='flex items-center gap-1 px-8 py-2 relative before:absolute before:top-0 before:left-0 before:w-1 before:h-full')
+        a(data-modal-target="popup-modal" data-modal-toggle="popup-modal" class='flex cursor-pointer items-center gap-1 px-8 py-2 relative before:absolute before:top-0 before:left-0 before:w-1 before:h-full')
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
           </svg>
           span Log out
     main(class="flex-grow bg-primary-grey")
       block content
+    #popup-modal.fixed.top-0.left-0.right-0.z-50.hidden.p-4.overflow-x-hidden.overflow-y-auto.h-modal(tabindex='-1' class='md:inset-0 md:h-full')
+      .relative.w-full.h-full.max-w-md(class='md:h-auto')
+        .relative.bg-white.rounded-lg.shadow(class='dark:bg-gray-700')
+          button.absolute.top-3.text-gray-400.bg-transparent.rounded-lg.text-sm.ml-auto.inline-flex.items-center(type='button' class='right-2.5 hover:bg-gray-200 hover:text-gray-900 p-1.5 dark:hover:bg-gray-800 dark:hover:text-white' data-modal-hide='popup-modal')
+            svg.w-5.h-5(aria-hidden='true' fill='currentColor' viewbox='0 0 20 20' xmlns='http://www.w3.org/2000/svg')
+              path(fill-rule='evenodd' d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z' clip-rule='evenodd')
+            span.sr-only Close modal
+          .p-6.text-center
+            svg.mx-auto.mb-4.text-gray-400.w-14.h-14(aria-hidden='true' class='dark:text-gray-200' fill='none' stroke='currentColor' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg')
+              path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z')
+            h3.mb-5.text-lg.font-normal.text-gray-500(class='dark:text-gray-400') Are you sure you want to log out?
+            button.text-white.bg-red-600.font-medium.rounded-lg.text-sm.inline-flex.items-center.px-5.text-center.mr-2(data-modal-hide='popup-modal' type='button' id='sure-logout-btn' class='hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 py-2.5')
+              | Yes, I'm sure
+            button.text-gray-500.bg-white.rounded-lg.border.border-gray-200.text-sm.font-medium.px-5(data-modal-hide='popup-modal' type='button' class='hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600') No, cancel
+    form(name="logout-form" method="GET" action="/logout")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js")
+    script.
+      document.addEventListener("DOMContentLoaded", function() {
+
+        let logOutForm = document.forms['logout-form'];
+        let logOutBtn = document.getElementById('sure-logout-btn')
+
+        logOutBtn.onclick = function () {
+          logOutForm.submit();
+        }
+
+      })
