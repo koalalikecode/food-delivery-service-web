@@ -36,16 +36,32 @@ block content
                             td(class='pl-4')= order.OrderID 
                             td= order.CustomerID
                             td= order.ShipperID 
-                            td(class='text-center')
+                            td(class='text-center relative')
                                 case order.Status
                                     when 'Done'
-                                        span(class="bg-[E0F0BB] px-2 py-0.5 rounded-full text-[70961A]")= order.Status
+                                        span(onClick=`document.getElementById('dropdown${order.OrderNum}').classList.toggle('hidden')` class="bg-[E0F0BB] cursor-pointer hover:shadow-md px-2 py-0.5 rounded-full text-[70961A]")= order.Status
                                     when 'Processing'
-                                        span(class="bg-[FFEEC2] px-2 py-0.5 rounded-full text-[b48f31]")= order.Status
+                                        span(onClick=`document.getElementById('dropdown${order.OrderNum}').classList.toggle('hidden')` class="bg-[FFEEC2] cursor-pointer hover:shadow px-2 py-0.5 rounded-full text-[b48f31]")= order.Status
                                     when 'Failed'
-                                        span(class="bg-red-300 px-2 py-0.5 rounded-full text-red-600")= order.Status
+                                        span(onClick=`document.getElementById('dropdown${order.OrderNum}').classList.toggle('hidden')` class="bg-red-300 cursor-pointer hover:shadow px-2 py-0.5 rounded-full text-red-600")= order.Status
                                     default 
                                         span= order.Status
+                                div(id=`dropdown${order.OrderNum}` class="dropdown absolute left-1/2 -translate-x-1/2 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-md w-36 dark:bg-gray-700")
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                    <li>
+                                        form(id=`ProcessingForm${order.OrderNum}` action=`/order/statusUpdate/${order.OrderNum}?_method=PUT&status=Processing` method='post' class='mb-0')
+                                        a(href=`#` onClick=`document.getElementById('ProcessingForm${order.OrderNum}').submit();` class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white") Processing
+                                    </li>
+                                    <li>
+                                        form(id=`DoneForm${order.OrderNum}` action=`/order/statusUpdate/${order.OrderNum}?_method=PUT&status=Done` method='post' class='mb-0')
+                                        a(href=`#` onClick=`document.getElementById('DoneForm${order.OrderNum}').submit();` class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white") Done
+                                    </li>
+                                    <li>
+                                        form(id=`FailForm${order.OrderNum}` action=`/order/statusUpdate/${order.OrderNum}?_method=PUT&status=Failed` method='post' class='mb-0')
+                                        a(href=`#` onClick=`document.getElementById('FailForm${order.OrderNum}').submit();` class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white") Failed
+                                    </li>
+                                    </ul>
+                                </div>
                             td 
                                 div(class="flex gap-1 justify-center")
                                     a(href= `/order/${order.OrderNum}` class='hover:bg-gray-300 cursor-pointer rounded-full p-0.5 text-blue-400')
@@ -80,6 +96,10 @@ block content
         script.
             document.addEventListener("DOMContentLoaded", function() {
 
+                //- document.onclick = function () {
+                //-     $('.dropdown').addClass('hidden')
+                //-     console.log($('.dropdown'))
+                //- }
                 let orderID;
                 let deleteOrderForm = document.forms['delete-order-form'];
                 let deleteOrderBtn = document.getElementById('sure-delete-btn')
@@ -93,6 +113,5 @@ block content
                 }
 
             })
-
 
 

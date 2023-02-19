@@ -9,5 +9,6 @@ router.get("/edit/:id", OrderController.edit);
 router.put("/update/:id", OrderController.update);
 router.post("/store", OrderController.store);
 router.delete("/delete/:id", OrderController.delete);
+router.put("/statusUpdate/:id", OrderController.updateStatus);
 
 module.exports = router;

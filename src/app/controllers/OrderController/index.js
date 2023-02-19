@@ -27,20 +27,15 @@ class ShipperController {
 
   // [POST] /order/store
   store(req, res) {
-    const {
-      orderCustomer,
-      orderShipper,
-      orderStatus,
-      orderFood,
-      orderFoodQuantity,
-    } = req.body;
+    const { orderCustomer, orderShipper, orderFood, orderFoodQuantity } =
+      req.body;
     const orderCreateQuery =
-      "insert into orders (CustomerID, ShipperID, Status) values (?, ?, ?); select max(OrderID) as OrderID from orders";
+      "insert into orders (CustomerID, ShipperID, Status) values (?, ?, 'Processing'); select max(OrderID) as OrderID from orders";
     const foodOrderSupplyAddQuery =
       "insert into food_order_supply values (?, ?, ?);";
     connection.query(
       orderCreateQuery,
-      [orderCustomer, orderShipper, orderStatus],
+      [orderCustomer, orderShipper],
       function (err, result) {
         if (err) return err;
         for (let i = 0; i < orderFood.length; i++) {
@@ -127,6 +122,15 @@ class ShipperController {
         res.redirect("/order/list");
       }
     );
+  }
+
+  updateStatus(req, res) {
+    const orderID = req.params.id;
+    const status = req.query.status;
+    const orderStatusUpdateQuery = `update orders set Status = ? where OrderID = ${orderID}`;
+    connection.query(orderStatusUpdateQuery, [status], (err, result) => {
+      res.redirect("/order/list");
+    });
   }
 
   // [DELETE] /order/delete/:id
