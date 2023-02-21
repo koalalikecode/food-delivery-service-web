@@ -69,8 +69,8 @@ class CustomerController {
   // [DELETE] /customer/delete/:id
   delete(req, res) {
     const customerID = req.params.id;
-    const deleteCustomerQuery = "delete from customer where CustomerID = ?";
-    connection.query(deleteCustomerQuery, [customerID], (err, result) => {
+    const deleteCustomerQuery = "CALL DeleteCustomer(?)";
+    connection.query(deleteCustomerQuery, customerID, (err, result) => {
       if (err) return err;
       res.redirect("/customer/list");
     });

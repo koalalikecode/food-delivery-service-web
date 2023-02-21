@@ -7,14 +7,16 @@ block order_nav
         </svg>
         span Orders
 block content
-    form(class='max-w-4xl mx-auto mt-10' action=`/order/update/${order}?_method=PUT` method='POST')
+    form(class='max-w-4xl mx-auto mt-10' action=`/order/update/${order.OrderID}?_method=PUT` method='POST')
         h3(class='text-2xl font-bold mb-6') Edit Order
         label(for="orderCustomer" class="block font-semibold mb-1 text-dark-grey") Customer:
-        select(id='orderCustomer' name="orderCustomer" type="text" class="pl-3 py-2 w-80 border text-black placeholder:text-dark-grey focus:outline-none focus:border focus:border-strong-purple rounded-md mb-3")
+        input(id='orderCustomer' name="orderCustomer" list='orderCustomerList' value=`${order.CustomerID}` type="text" class="pl-3 py-2 w-80 border text-black placeholder:text-dark-grey focus:outline-none focus:border focus:border-strong-purple rounded-md mb-3")
+        datalist(id='orderCustomerList')
             each customer in customers
                 option(value=`${customer.CustomerID}`)=customer.name
         label(for="orderShipper" class="block font-semibold mb-1 text-dark-grey") Shipper:
-        select(id='orderShipper' name="orderShipper" type="text" class="pl-3 py-2 w-80 border text-black placeholder:text-dark-grey focus:outline-none focus:border focus:border-strong-purple rounded-md mb-3")
+        input(id='orderShipper' name="orderShipper" list='orderShipperList' value=`${order.ShipperId}` type="text" class="pl-3 py-2 w-80 border text-black placeholder:text-dark-grey focus:outline-none focus:border focus:border-strong-purple rounded-md mb-3")
+        datalist(id='orderShipperList')
             each shipper in shippers
                 option(value=`${shipper.ShipperID}`)=shipper.name  
         div(class="mb-3")
@@ -23,7 +25,7 @@ block content
                 input( type="radio" id="Done" name="orderStatus" value="Done")
                 label(for="Done") Done
             div(class='flex items-center gap-1 mb-0.5 ml-5')
-                input( type="radio" id="Processing" name="orderStatus" value="Processing")
+                input( type="radio" id="Processing" name="orderStatus" checked value="Processing")
                 label(for="Processing") Processing
             div(class='flex items-center gap-1 mb-0.5 ml-5')
                 input( type="radio" id="Failed" name="orderStatus" value="Failed")

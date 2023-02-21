@@ -80,11 +80,11 @@ class ShipperController {
   edit(req, res) {
     const orderID = req.params.id;
     const orderListQuery =
-      "select * from customer;select * from shipper;select * from food";
+      "select * from customer;select * from shipper;select * from food; select * from orders where OrderID = ?";
     connection.query(orderListQuery, [orderID], function (err, result) {
       if (err) return err;
       res.render("order/edit", {
-        order: orderID,
+        order: result[3][0],
         customers: result[0],
         shippers: result[1],
         foods: result[2],
