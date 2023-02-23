@@ -39,11 +39,11 @@ block content
                             td(class='text-center relative')
                                 case order.Status
                                     when 'Done'
-                                        span(onClick=`document.getElementById('dropdown${order.OrderNum}').classList.toggle('hidden')` class="bg-[E0F0BB] cursor-pointer hover:shadow-md px-2 py-0.5 rounded-full text-[70961A]")= order.Status
+                                        span(onClick=`$('#dropdown${order.OrderNum}').toggle()` class="bg-[E0F0BB] cursor-pointer hover:shadow-md px-2 py-0.5 rounded-full text-[70961A] status-btn")= order.Status
                                     when 'Processing'
-                                        span(onClick=`document.getElementById('dropdown${order.OrderNum}').classList.toggle('hidden')` class="bg-[FFEEC2] cursor-pointer hover:shadow px-2 py-0.5 rounded-full text-[b48f31]")= order.Status
+                                        span(onClick=`$('#dropdown${order.OrderNum}').toggle()` class="bg-[FFEEC2] cursor-pointer hover:shadow px-2 py-0.5 rounded-full text-[b48f31] status-btn")= order.Status
                                     when 'Failed'
-                                        span(onClick=`document.getElementById('dropdown${order.OrderNum}').classList.toggle('hidden')` class="bg-red-300 cursor-pointer hover:shadow px-2 py-0.5 rounded-full text-red-600")= order.Status
+                                        span(onClick=`$('#dropdown${order.OrderNum}').toggle()` class="bg-red-300 cursor-pointer hover:shadow px-2 py-0.5 rounded-full text-red-600 status-btn")= order.Status
                                     default 
                                         span= order.Status
                                 div(id=`dropdown${order.OrderNum}` class="dropdown absolute left-1/2 -translate-x-1/2 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-md w-36 dark:bg-gray-700")
@@ -96,10 +96,11 @@ block content
         script.
             document.addEventListener("DOMContentLoaded", function() {
 
-                //- document.onclick = function () {
-                //-     $('.dropdown').addClass('hidden')
-                //-     console.log($('.dropdown'))
-                //- }
+                document.onclick = function (e) {
+                    if(!e.target.classList.contains("status-btn")) {
+                        $('.dropdown').hide();
+                    }
+                }
                 let orderID;
                 let deleteOrderForm = document.forms['delete-order-form'];
                 let deleteOrderBtn = document.getElementById('sure-delete-btn')
