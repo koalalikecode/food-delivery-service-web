@@ -4,9 +4,10 @@ class CustomerController {
   // [GET] /customer/list
   list(req, res) {
     const customerSearch = req.query.customerSearch;
+    const customerRank = req.query.rank;
     const customerListQuery = `select CustomerID as CustomerNum, concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID, name, PhoneNumber, Address, rank_member from customer ${
       customerSearch ? `where name like '%${customerSearch.trim()}%'` : ""
-    } `;
+    }${customerRank ? `where rank_member = '${customerRank}'` : ""} `;
     connection.query(customerListQuery, function (err, result) {
       if (err) return err;
       res.render("customer/list", {

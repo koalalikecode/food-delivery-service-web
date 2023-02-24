@@ -1,6 +1,4 @@
 const connection = require("../../../config/db");
-// const { identicon } = require("minidenticons");
-// import { identicon } from "minidenticons";
 
 class HomeController {
   index(req, res) {
