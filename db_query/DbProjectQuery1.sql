@@ -1,3 +1,6 @@
+use restaurent_management;
+
+-- Create database
 create table Food(
 	FoodID int Not null Primary Key auto_increment,
 	name varchar(25) not null,
@@ -35,7 +38,33 @@ create table Food_order_supply (
 	Quantity int not null
 );
 
+CREATE TABLE DeletedCustomer (
+	CustomerID int NOT NULL PRIMARY KEY,
+	name varchar(25) NOT NULL,
+	PhoneNumber varchar(15) NOT NULL,
+    Address varchar(50),
+	rank_member varchar(20) DEFAULT 'bronze'
+);
 
+drop table deletedCustomer;
+
+DELIMITER $$
+
+CREATE TRIGGER tg_DeletedCustomer
+BEFORE DELETE
+ON Customer FOR EACH ROW
+BEGIN
+    INSERT INTO DeletedCustomer
+    VALUES(OLD.CustomerID,OLD.name,OLD.PhoneNumber,OLD.Address,OlD.rank_member);
+END$$    
+
+DELIMITER ;
+
+drop trigger tg_DeletedCustomer;
+
+select * from Customer;
+select * from Shipper;
+select * from Food;
 INSERT INTO Customer (name, CustomerID, PhoneNumber, address) VALUES
 ('John Smith', 1, '555-555-5555', '123 Main St'),
 ('Jane Doe', 2, '555-555-5556', '456 Park Ave'),
@@ -58,7 +87,7 @@ INSERT INTO Customer (name, CustomerID, PhoneNumber, address) VALUES
 ('Avery Cook', 19, '555-555-5573', '4041 Cherry St'),
 ('Evelyn Moore', 20, '555-555-5574', '4243 Pine St');
 
-INSERT INTO shipper (ShipperID, name, PhoneNumber) VALUES
+INSERT INTO Shipper (ShipperID, name, PhoneNumber) VALUES
 (1, 'Tom Smith', '555-555-5575'),
 (2, 'Mary Johnson', '555-555-5576'),
 (3, 'Mike Williams', '555-555-5577'),
@@ -92,6 +121,7 @@ INSERT INTO Orders (OrderID, CustomerID, ShipperId, Status) VALUES
 (12, 12, 2, 'Processing'),
 (13, 13, 3, 'Failed'),
 (14, 14, 4, 'Done'),
+#define MAX_NAME_LENGTH 50
 (15, 15, 5, 'Processing'),
 (16, 16, 1, 'Done'),
 (17, 17, 2, 'Processing'),
@@ -121,10 +151,9 @@ INSERT INTO Food_order_supply (FoodID, OrderID, Quantity) VALUES
 (2, 18, 2),
 (3, 19, 3),
 (4, 20, 2);
-
 -- ---------- CUSTOMER ----------
 -- Select all customer information
-select concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID, name, PhoneNumber, Address from customer;
+select concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID, name, PhoneNumber, Address from Customer;
 
 -- count the number of customer
 select count(CustomerID) as Number_of_customer from customer;
@@ -137,9 +166,17 @@ insert into customer (name, PhoneNumber, Address) values
 select concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID, name, PhoneNumber, Address
 from customer where name like '%Input%';
 
+-- List all customer and total money they spend
+select concat(case when C.CustomerID < 10 then 'S0' else 'S' end, C.CustomerID) as CustomerID, C.name, PhoneNumber, Address,count(OD.OrderID) as Total_Order, round(sum(FS.Quantity*F.price),2) as Total_Spend
+from Customer as C Join Orders OD on C.CustomerID = OD.CustomerID
+Join Food_order_supply FS on OD.OrderID = FS.OrderID
+Join Food F on F.FoodID = FS.FoodID
+group by C.CustomerID, C.name
+order by Total_Spend desc;
+
 -- ----------- SHIPPER -------------
 -- Select all shipper information
-select concat(case when ShipperID < 10 then 'S0' else 'S' end, ShipperID) as ShipperID, name, PhoneNumber from shipper;
+select concat(case when ShipperID < 10 then 'S0' else 'S' end, ShipperID) as ShipperID, name, PhoneNumber from Shipper;
 
 -- count number of shipper
 select count(ShipperID) as Number_of_Shipper from shipper;
@@ -152,20 +189,43 @@ insert into shipper (name, PhoneNumber) values
 select concat(case when ShipperID < 10 then 'S0' else 'S' end, ShipperID) as ShipperID, name, PhoneNumber
 from shipper where name like '%Input%';
 
+-- Search Shipper's Orders by name
+select OD.OrderID, OD.Status from Shipper S join Orders OD on S.ShipperId = OD.ShipperID
+where S.name like "%Input%";
+
+
 -- --------- ORDER ----------
 -- Select all order information
 select concat(case when OrderID < 10 then 'Or0' else 'Or' end, OrderID) as OrderID,
 concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID,
 concat(case when ShipperID < 10 then 'S0' else 'S' end, ShipperID) as ShipperID, Status
-from orders;
+from Orders;
+-- Search Orders and total money by customer's name
+select concat(case when OD.OrderID < 10 then 'Or0' else 'Or' end, OD.OrderID) as OrderID, round(sum(FD.Quantity * F.price),2) as Total from Customer C 
+join Orders as OD on C.CustomerID = OD.CustomerID
+join Food_order_supply FD on OD.OrderID = FD.OrderID
+join Food F on FD.FoodID = F.FoodID
+where C.name like "%Tai%"
+group by OD.OrderID;
+
+-- Total money of order
+select concat(case when OD.OrderID < 10 then 'Or0' else 'Or' end, OD.OrderID) as OrderID, round(sum(FD.Quantity * F.price),2) as Total from Orders as OD 
+join Food_order_supply FD on OD.OrderID = FD.OrderID
+join Food F on FD.FoodID = F.FoodID
+group by OD.OrderID
+order by OD.OrderID;
+
+
 
 -- count the number of orders:
-select count(OrderID) as Number_of_orders from orders;
+select count(OrderID) as Number_of_orders from Orders;
 
 -- Add new order:
 insert into orders (CustomerID, ShipperID, Status) values
 (CustomerID, ShipperID, 'Order_status');
 
+insert into Food_order_supply (FoodID, Quantity) value 
+(FoodID, Quantity);
 
 -- ------- FOOD --------
 -- Select all food information
@@ -194,7 +254,7 @@ from food order by price desc;
 -- List all food orders:
 select concat(case when FoodID < 10 then 'F0' else 'F' end, FoodID) as FoodID,
 concat(case when OrderID < 10 then 'Or0' else 'Or' end, OrderID) as OrderID,
-Quantity from food_order_supply;
+Quantity from Food_order_supply;
 
 -- Sort food order by quantity asc:
 select concat(case when FoodID < 10 then 'F0' else 'F' end, FoodID) as FoodID,
@@ -208,7 +268,60 @@ Quantity from food_order_supply order by Quantity desc;
 
 -- Count the quantity per food:
 select concat(case when FoodID < 10 then 'F0' else 'F' end, FoodID) as FoodID, sum(Quantity) as Total_number
-from food_order_supply 
-group by FoodID order by Total_number;
+from Food_order_supply 
+group by FoodID order by Total_number desc;
 
+-- add rank attribute in table customers
+ALTER TABLE Customer
+ADD rank_member varchar(20) DEFAULT 'bronze';
+
+select * from customer;
+-- trigger for insert on table Orders to updat rank member in customers
+DELIMITER $$
+CREATE TRIGGER set_customer_rank
+AFTER INSERT ON food_order_supply
+FOR EACH ROW
+BEGIN
+    DECLARE total_money FLOAT;
+    DECLARE CID INT;
+    SELECT CustomerID 
+    INTO CID
+    FROM Orders WHERE OrderID = NEW.OrderID;
+    
+    SELECT SUM(price * Quantity)
+    INTO total_money
+    FROM Food_order_supply JOIN Food ON Food_order_supply.FoodID = Food.FoodID
+    WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = CID);
+    
+    IF( total_money > 300) THEN
+        UPDATE Customer SET rank_member = 'gold' WHERE CustomerID = CID;
+	elseif (total_money > 100) then 
+		update Customer Set rank_member = 'silver' where CustomerID = CID;
+	else 
+		update Customer Set rank_member = 'bronze' where CustomerID = CID;
+    END IF;
+END$$
+
+DELIMITER ;
+drop trigger set_customer_rank;
+SELECT SUM(price * Quantity)
+    FROM Food_order_supply JOIN Food ON Food_order_supply.FoodID = Food.FoodID
+    WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = 2);
+
+delete from food_order_supply where OrderID in (select OrderID From orders where CustomerID = 37);
+delete from orders where CustomerID = 37;
+delete from customer where CustomerID = 37;
+
+DELIMITER //
+
+CREATE PROCEDURE DeleteCustomer(IN CID int)
+BEGIN
+	delete from food_order_supply where OrderID in (select OrderID From orders where CustomerID = CID);
+	delete from orders where CustomerID = CID;
+	delete from customer where CustomerID = CID;
+END //
+
+DELIMITER ;
+
+CALL DeleteCustomer(38)
 
