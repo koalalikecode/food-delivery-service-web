@@ -22,6 +22,7 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "method-override": "^3.0.0",
+    "minidenticons": "^2.0.0",
     "mssql": "^9.1.1",
     "mysql": "^2.18.1",
     "passport": "^0.6.0",

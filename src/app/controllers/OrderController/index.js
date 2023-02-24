@@ -66,6 +66,7 @@ class ShipperController {
         result[2].forEach((food) => {
           total += food.price * food.Quantity;
         });
+        total = total.toFixed(2);
         res.render("order/show", {
           order: { total, orderID, isOrderGreaterThan10: orderID >= 10 },
           customer: result[0][0],
