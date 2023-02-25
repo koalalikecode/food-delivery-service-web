@@ -19,11 +19,11 @@ class HomeController {
   }
 
   login(req, res) {
-    res.render("auth/login");
+    res.render("auth/login", { message: req.flash("loginMessage") });
   }
 
   register(req, res) {
-    res.render("auth/register");
+    res.render("auth/register", { message: req.flash("signupMessage") });
   }
 
   authLogin(req, res) {
