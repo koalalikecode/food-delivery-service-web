@@ -1,6 +1,4 @@
 const connection = require("../../../config/db");
-// const { identicon } = require("minidenticons");
-// import { identicon } from "minidenticons";
 
 class HomeController {
   index(req, res) {
@@ -21,11 +19,11 @@ class HomeController {
   }
 
   login(req, res) {
-    res.render("auth/login");
+    res.render("auth/login", { message: req.flash("loginMessage") });
   }
 
   register(req, res) {
-    res.render("auth/register");
+    res.render("auth/register", { message: req.flash("signupMessage") });
   }
 
   authLogin(req, res) {
