@@ -10,13 +10,13 @@ create table Food(
 create table Shipper (
 	ShipperID int not null Primary Key auto_increment,
 	name varchar(25) not null,
-	PhoneNumber varchar(15) not null
+	PhoneNumber varchar(15) not null unique
 );
 
 create Table Customer (
 	CustomerID int not null Primary key auto_increment,
 	name varchar(25) not null,
-	PhoneNumber varchar(15) not null,
+	PhoneNumber varchar(15) not null unique,
 	Address varchar(50)
 );
 
@@ -46,25 +46,9 @@ CREATE TABLE DeletedCustomer (
 	rank_member varchar(20) DEFAULT 'bronze'
 );
 
-drop table deletedCustomer;
 
-DELIMITER $$
 
-CREATE TRIGGER tg_DeletedCustomer
-BEFORE DELETE
-ON Customer FOR EACH ROW
-BEGIN
-    INSERT INTO DeletedCustomer
-    VALUES(OLD.CustomerID,OLD.name,OLD.PhoneNumber,OLD.Address,OlD.rank_member);
-END$$    
-
-DELIMITER ;
-
-drop trigger tg_DeletedCustomer;
-
-select * from Customer;
-select * from Shipper;
-select * from Food;
+-- Insert the sample
 INSERT INTO Customer (name, CustomerID, PhoneNumber, address) VALUES
 ('John Smith', 1, '555-555-5555', '123 Main St'),
 ('Jane Doe', 2, '555-555-5556', '456 Park Ave'),
@@ -104,8 +88,6 @@ INSERT INTO Food (FoodID, name, price) VALUES
 (7, 'Seafood Paella', 18.99),
 (8, 'Lamb Chops', 25.99);
 
-
-
 INSERT INTO Orders (OrderID, CustomerID, ShipperId, Status) VALUES
 (1, 1, 1, 'Done'),
 (2, 2, 2, 'Processing'),
@@ -129,7 +111,6 @@ INSERT INTO Orders (OrderID, CustomerID, ShipperId, Status) VALUES
 (19, 19, 4, 'Done'),
 (20, 20, 5, 'Processing');
 
-
 INSERT INTO Food_order_supply (FoodID, OrderID, Quantity) VALUES
 (1, 1, 2),
 (2, 2, 1),
@@ -151,6 +132,8 @@ INSERT INTO Food_order_supply (FoodID, OrderID, Quantity) VALUES
 (2, 18, 2),
 (3, 19, 3),
 (4, 20, 2);
+
+
 -- ---------- CUSTOMER ----------
 -- Select all customer information
 select concat(case when CustomerID < 10 then 'C0' else 'C' end, CustomerID) as CustomerID, name, PhoneNumber, Address from Customer;
@@ -173,6 +156,62 @@ Join Food_order_supply FS on OD.OrderID = FS.OrderID
 Join Food F on F.FoodID = FS.FoodID
 group by C.CustomerID, C.name
 order by Total_Spend desc;
+
+-- Create DeletedCustomer tablle to save deleted customer
+
+DELIMITER $$
+
+CREATE TRIGGER tg_DeletedCustomer
+BEFORE DELETE
+ON Customer FOR EACH ROW
+BEGIN
+    INSERT INTO DeletedCustomer
+    VALUES(OLD.CustomerID,OLD.name,OLD.PhoneNumber,OLD.Address,OlD.rank_member);
+END$$    
+
+DELIMITER ;
+
+-- Create procedure to delete Customer
+DELIMITER //
+
+CREATE PROCEDURE DeleteCustomer(IN CID int)
+BEGIN
+	delete from food_order_supply where OrderID in (select OrderID From orders where CustomerID = CID);
+	delete from orders where CustomerID = CID;
+	delete from customer where CustomerID = CID;
+END //
+
+DELIMITER ;
+
+-- Trigger for insert on table Orders to update rank member in customers
+DELIMITER $$
+CREATE TRIGGER set_customer_rank
+AFTER INSERT ON food_order_supply
+FOR EACH ROW
+BEGIN
+    DECLARE total_money FLOAT;
+    DECLARE CID INT;
+    SELECT CustomerID 
+    INTO CID
+    FROM Orders WHERE OrderID = NEW.OrderID;
+    
+    SELECT SUM(price * Quantity)
+    INTO total_money
+    FROM Food_order_supply JOIN Food ON Food_order_supply.FoodID = Food.FoodID
+    WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = CID);
+    
+    IF( total_money > 300) THEN
+        UPDATE Customer SET rank_member = 'gold' WHERE CustomerID = CID;
+	elseif (total_money > 100) then 
+		update Customer Set rank_member = 'silver' where CustomerID = CID;
+	else 
+		update Customer Set rank_member = 'bronze' where CustomerID = CID;
+    END IF;
+END$$
+
+DELIMITER ;
+
+
 
 -- ----------- SHIPPER -------------
 -- Select all shipper information
@@ -250,6 +289,8 @@ from food order by price asc;
 select concat(case when FoodID < 10 then 'F0' else 'F' end, FoodID) as FoodID, name, price
 from food order by price desc;
 
+
+
 -- ---------- Food order supply --------
 -- List all food orders:
 select concat(case when FoodID < 10 then 'F0' else 'F' end, FoodID) as FoodID,
@@ -275,53 +316,11 @@ group by FoodID order by Total_number desc;
 ALTER TABLE Customer
 ADD rank_member varchar(20) DEFAULT 'bronze';
 
-select * from customer;
--- trigger for insert on table Orders to updat rank member in customers
-DELIMITER $$
-CREATE TRIGGER set_customer_rank
-AFTER INSERT ON food_order_supply
-FOR EACH ROW
-BEGIN
-    DECLARE total_money FLOAT;
-    DECLARE CID INT;
-    SELECT CustomerID 
-    INTO CID
-    FROM Orders WHERE OrderID = NEW.OrderID;
-    
-    SELECT SUM(price * Quantity)
-    INTO total_money
-    FROM Food_order_supply JOIN Food ON Food_order_supply.FoodID = Food.FoodID
-    WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = CID);
-    
-    IF( total_money > 300) THEN
-        UPDATE Customer SET rank_member = 'gold' WHERE CustomerID = CID;
-	elseif (total_money > 100) then 
-		update Customer Set rank_member = 'silver' where CustomerID = CID;
-	else 
-		update Customer Set rank_member = 'bronze' where CustomerID = CID;
-    END IF;
-END$$
 
-DELIMITER ;
-drop trigger set_customer_rank;
-SELECT SUM(price * Quantity)
-    FROM Food_order_supply JOIN Food ON Food_order_supply.FoodID = Food.FoodID
-    WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = 2);
 
-delete from food_order_supply where OrderID in (select OrderID From orders where CustomerID = 37);
-delete from orders where CustomerID = 37;
-delete from customer where CustomerID = 37;
 
-DELIMITER //
 
-CREATE PROCEDURE DeleteCustomer(IN CID int)
-BEGIN
-	delete from food_order_supply where OrderID in (select OrderID From orders where CustomerID = CID);
-	delete from orders where CustomerID = CID;
-	delete from customer where CustomerID = CID;
-END //
 
-DELIMITER ;
 
-CALL DeleteCustomer(38)
+
 
